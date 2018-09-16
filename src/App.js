@@ -3,7 +3,6 @@ import logo from "./logo.svg";
 import "./App.css";
 import Botao from "./components/botao";
 import Contatos from "./components/contatos";
-//import axios from "axios";
 
 class App extends Component {
   constructor(props) {
@@ -16,13 +15,6 @@ class App extends Component {
   contatos = [];
   handleClick = () => {
     this.setState({ name: "Welcome to React" });
-    // axios.get("https://jsonplaceholder.typicode.com/users").then(response => {
-    //   const newContact = response.data.map(c => {
-    //     return { id: c.id, name: c.name, email: c.email };
-    //   });
-    //   let newState = { contatos: newContact, name: "Welcome to React" };
-    //   this.setState(newState);
-    // });
     this.componentDidMount();
   };
 
@@ -38,10 +30,10 @@ class App extends Component {
         this.setState(newState);
       });
   }
+
   handleText = e => {
     let value = e.target.value;
     this.setState({ name: value });
-    console.log(this.contatos);
     if (value.length === 0) {
       this.setState({ contatos: this.contatos });
     } else {
@@ -71,7 +63,6 @@ class App extends Component {
         />
         <br />
         <Botao label="Reset" onClick={this.handleClick} />
-
         <Contatos contatos={this.state.contatos} />
       </div>
     );
