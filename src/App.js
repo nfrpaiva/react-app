@@ -3,7 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import Botao from "./components/botao";
 import Contatos from "./components/contatos";
-import axios from "axios";
+//import axios from "axios";
 
 class App extends Component {
   constructor(props) {
@@ -13,18 +13,44 @@ class App extends Component {
       name: "Welcome to React"
     };
   }
+  contatos = [];
   handleClick = () => {
     this.setState({ name: "Welcome to React" });
-    axios.get("https://jsonplaceholder.typicode.com/users").then(response => {
-      const newContact = response.data.map(c => {
-        return { id: c.id, name: c.name, email: c.email };
-      });
-      let newState = { contatos: newContact, name: "Welcome to React" };
-      this.setState(newState);
-    });
+    // axios.get("https://jsonplaceholder.typicode.com/users").then(response => {
+    //   const newContact = response.data.map(c => {
+    //     return { id: c.id, name: c.name, email: c.email };
+    //   });
+    //   let newState = { contatos: newContact, name: "Welcome to React" };
+    //   this.setState(newState);
+    // });
+    this.componentDidMount();
   };
+
+  componentDidMount() {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then(res => res.json())
+      .then(result => {
+        let contatos = result.map(c => {
+          return { id: c.id, name: c.name, email: c.email };
+        });
+        let newState = { contatos: contatos, name: "Welcome to React" };
+        this.contatos = newState.contatos;
+        this.setState(newState);
+      });
+  }
   handleText = e => {
-    this.setState({ name: e.target.value });
+    let value = e.target.value;
+    this.setState({ name: value });
+    console.log(this.contatos);
+    if (value.length === 0) {
+      this.setState({ contatos: this.contatos });
+    } else {
+      this.setState({
+        contatos: this.contatos.filter(c =>
+          c.name.toLowerCase().includes(value.toLowerCase())
+        )
+      });
+    }
   };
 
   render() {
