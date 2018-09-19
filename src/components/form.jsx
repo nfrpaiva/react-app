@@ -9,8 +9,28 @@ class Form extends Component {
     });
   };
   onSubmitHandler = e => {
-    console.log("values submited:", this.state);
     e.preventDefault();
+    const request = this.state;
+    console.log("values submited:", this.state);
+    fetch("http://192.168.15.12:9090/usuario", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      method: "PUT",
+      body: JSON.stringify({
+        login: request.email,
+        senha: request.senha,
+        ativo: request.conectado,
+        sistemas: [{ descricao: "fixo teste" }]
+      })
+    })
+      .then(res => {
+        console.log("response", res);
+      })
+      .catch(res => {
+        console.log("erro", res);
+      });
   };
   render() {
     return (
