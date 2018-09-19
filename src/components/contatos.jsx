@@ -5,12 +5,13 @@ class Contatos extends Component {
     return (
       <React.Fragment>
         <h1>Contatos {this.props.contatos.length}</h1>
-        <table className="table">
+        <table className="table table-striped">
           <thead>
             <tr>
               <th scope="col">Id</th>
               <th scope="col"> Nome</th>
               <th scope="col">Email</th>
+              <th scope="col">User Name</th>
             </tr>
           </thead>
           <tbody>
@@ -21,6 +22,7 @@ class Contatos extends Component {
                     <td>{contato.id}</td>
                     <td>{contato.name}</td>
                     <td>{contato.email}</td>
+                    <td>{contato.userName}</td>
                   </tr>
                 </React.Fragment>
               );
