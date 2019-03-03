@@ -1,28 +1,30 @@
-import React, { Component } from "react";
-class Contatos extends Component {
-  state = {};
-  render() {
-    return (
+import React from "react";
+import {connect} from "react-redux"
+const Contatos = (props) =>  {
+return (
       <React.Fragment>
-        <h1>Contatos {this.props.contatos.length}</h1>
+        <h1>Contatos {props.contatos.length}</h1>
         <table className="table table-striped">
           <thead>
             <tr>
               <th scope="col">Id</th>
-              <th scope="col"> Nome</th>
+              <th scope="col">Nome</th>
               <th scope="col">Email</th>
               <th scope="col">User Name</th>
+              <th scope="coll">Action</th>
             </tr>
           </thead>
           <tbody>
-            {this.props.contatos.map(contato => {
+            {props.contatos.map(c => {
+              const {id, name, email, userName} =  c;
               return (
-                <React.Fragment key={contato.id}>
+                <React.Fragment key={id}>
                   <tr>
-                    <td>{contato.id}</td>
-                    <td>{contato.name}</td>
-                    <td>{contato.email}</td>
-                    <td>{contato.userName}</td>
+                    <td>{id}</td>
+                    <td>{name}</td>
+                    <td>{email}</td>
+                    <td>{userName}</td>
+                    <td><button onClick={(e) => props.delete(id) } className="btn btn-danger btn-sm">excluir</button></td>
                   </tr>
                 </React.Fragment>
               );
@@ -31,7 +33,19 @@ class Contatos extends Component {
         </table>
       </React.Fragment>
     );
-  }
+  
 }
 
-export default Contatos;
+const mapDipatchToProps = dispatch => {
+  return {
+    
+    delete: key => {
+      dispatch({
+        type: 'DELETE',
+        payload : key
+      })
+    }
+  };
+};
+
+export default connect(null, mapDipatchToProps) (Contatos);

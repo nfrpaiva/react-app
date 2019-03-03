@@ -1,50 +1,46 @@
 import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-//import Botao from "./components/botao";
 import Contatos from "./components/contatos";
 import Form from "./components/form";
-
+import { connect } from "react-redux";
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      contatos: [{ name: "teste", id: 1, email: "zequina@teste.com" }],
-      name: "Welcome to React"
+      filter: ""
     };
   }
-  contatos = [];
 
   componentDidMount() {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then(res => res.json())
-      .then(result => {
-        let contatos = result.map(c => {
-          return {
-            id: c.id,
-            name: c.name,
-            email: c.email,
-            userName: c.username
-          };
+      .then(result =>
+        result.slice(0, 5).map(c => ({
+          id: c.id,
+          name: c.name,
+          email: c.email,
+          userName: c.username
+        }))
+      )
+      .then(contatos => {
+        this.setState({
+          contatos
         });
-        let newState = { contatos: contatos, name: "Welcome to React" };
-        this.contatos = newState.contatos;
-        this.setState(newState);
-      });
+        return contatos;
+      })
+      .then(c => {
+        this.props.preFill(c);
+      })
+      .catch(res => console.log("deu erro", res));
   }
 
   handleText = e => {
     let value = e.target.value;
-    this.setState({ name: value });
-    if (value.length === 0) {
-      this.setState({ contatos: this.contatos });
-    } else {
-      this.setState({
-        contatos: this.contatos.filter(c =>
-          c.name.toLowerCase().includes(value.toLowerCase())
-        )
-      });
-    }
+    this.setState({
+      filter: value
+    });
+    this.props.filter(value);
   };
 
   render() {
@@ -66,12 +62,37 @@ class App extends Component {
           onChange={this.handleText}
           type="text"
           className="m-2"
-          value={this.state.name}
+          value={this.state.filter}
         />
-        <Contatos contatos={this.state.contatos} />
+        <Contatos contatos={this.props.contatos} />
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    contatos: state.contatosReducer
+  };
+};
+const mapDipatchToProps = dispatch => {
+  return {
+    preFill: contatos => {
+      dispatch({
+        type: "PREFILL",
+        payload: contatos
+      });
+    },
+    filter: name => {
+      dispatch({
+        type: "FILTER",
+        payload: name
+      });
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDipatchToProps
+)(App);

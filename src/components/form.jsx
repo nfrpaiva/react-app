@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {connect } from "react-redux";
 
 class Form extends Component {
   state = { email: "", senha: "", conectado: true };
@@ -11,26 +12,19 @@ class Form extends Component {
   onSubmitHandler = e => {
     e.preventDefault();
     const request = this.state;
-    console.log("values submited:", this.state);
-    fetch("http://192.168.15.12:9090/usuario", {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      method: "PUT",
-      body: JSON.stringify({
-        login: request.email,
-        senha: request.senha,
-        ativo: request.conectado,
-        sistemas: [{ descricao: "fixo teste" }]
-      })
-    })
-      .then(res => {
-        console.log("response", res);
-      })
-      .catch(res => {
-        console.log("erro", res);
-      });
+
+    const novoContato = {
+      id: Math.random(),
+      email: request.email,
+      userName: request.email,
+      name: request.email,
+      senha: request.senha,
+      ativo: request.conectado,
+      sistemas: [{ descricao: "fixo teste" }]
+    }
+
+    this.props.add(novoContato)
+   
   };
   render() {
     return (
@@ -83,5 +77,21 @@ class Form extends Component {
     );
   }
 }
+const mapDipatchToProps = dispatch => {
+  return {
+    add: contato => {
+      dispatch({
+        type: "ADD",
+        payload: contato
+      });
+    },
+    delete: key => {
+      dispatch({
+        type: 'DELETE',
+        payload : key
+      })
+    }
+  };
+};
 
-export default Form;
+export default  connect(null, mapDipatchToProps ) (Form);
