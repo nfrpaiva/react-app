@@ -1,3 +1,4 @@
+import { FILTER, PREFILL, DELETE, ADD } from "../actions/contatos";
 const initialState = [
   {
     name: "teste",
@@ -9,10 +10,10 @@ const initialState = [
 let full = [];
 const contatos = (state = initialState, action) => {
   switch (action.type) {
-    case "PREFILL":
+    case PREFILL:
       full = [...action.payload];
       return [...full];
-    case "FILTER":
+    case FILTER:
       if (action.payload.length === 0) {
         return [...full];
       } else {
@@ -20,12 +21,12 @@ const contatos = (state = initialState, action) => {
           c.name.toLowerCase().includes(action.payload.toLowerCase())
         );
       }
-    case "ADD":
+    case ADD:
       full = [...state, { ...action.payload }];
       return [...state, { ...action.payload }];
-    case "DELETE":
-      full = state.filter(s => s.id != action.payload);
-      return state.filter(s => s.id != action.payload);
+    case DELETE:
+      full = state.filter(s => s.id !== action.payload);
+      return state.filter(s => s.id !== action.payload);
     default:
       return state;
   }

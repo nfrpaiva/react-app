@@ -1,5 +1,6 @@
 import React from "react";
 import {connect} from "react-redux"
+import {del} from "../actions/contatos"
 const Contatos = (props) =>  {
 return (
       <React.Fragment>
@@ -40,10 +41,7 @@ const mapDipatchToProps = dispatch => {
   return {
     
     delete: key => {
-      dispatch({
-        type: 'DELETE',
-        payload : key
-      })
+      dispatch(del(key))
     }
   };
 };

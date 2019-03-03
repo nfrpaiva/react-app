@@ -4,6 +4,7 @@ import "./App.css";
 import Contatos from "./components/contatos";
 import Form from "./components/form";
 import { connect } from "react-redux";
+import { preFill, filter } from "./actions/contatos";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -78,16 +79,10 @@ const mapStateToProps = state => {
 const mapDipatchToProps = dispatch => {
   return {
     preFill: contatos => {
-      dispatch({
-        type: "PREFILL",
-        payload: contatos
-      });
+      dispatch(preFill(contatos));
     },
     filter: name => {
-      dispatch({
-        type: "FILTER",
-        payload: name
-      });
+      dispatch(filter(name));
     }
   };
 };

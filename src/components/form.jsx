@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {connect } from "react-redux";
+import { add, del } from "../actions/contatos"
 
 class Form extends Component {
   state = { email: "", senha: "", conectado: true };
@@ -80,16 +81,10 @@ class Form extends Component {
 const mapDipatchToProps = dispatch => {
   return {
     add: contato => {
-      dispatch({
-        type: "ADD",
-        payload: contato
-      });
+      dispatch(add(contato));
     },
     delete: key => {
-      dispatch({
-        type: 'DELETE',
-        payload : key
-      })
+      dispatch(del(key))
     }
   };
 };
