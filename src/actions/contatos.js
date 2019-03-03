@@ -8,13 +8,6 @@ export function preFill(contatos) {
     payload: contatos
   };
 }
-export function filter(name) {
-  return {
-    type: FILTER,
-    payload: name
-  };
-}
-
 export function del(key) {
   return {
     type: DELETE,

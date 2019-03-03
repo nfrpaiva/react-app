@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import Contatos from "./components/contatos";
 import Form from "./components/form";
@@ -35,7 +34,12 @@ class App extends Component {
     this.setState({
       filter: value
     });
-    this.props.filter(value);
+  };
+
+  contatosFiltrados = () => {
+    return this.props.contatos.filter(c =>
+      c.name.toLowerCase().includes(this.state.filter.toLowerCase())
+    );
   };
 
   render() {
@@ -49,7 +53,7 @@ class App extends Component {
           className="m-2"
           value={this.state.filter}
         />
-        <Contatos contatos={this.props.contatos} />
+        <Contatos contatos={this.contatosFiltrados()} />
       </div>
     );
   }
@@ -64,9 +68,6 @@ const mapDipatchToProps = dispatch => {
   return {
     preFill: contatos => {
       dispatch(preFill(contatos));
-    },
-    filter: name => {
-      dispatch(filter(name));
     }
   };
 };
