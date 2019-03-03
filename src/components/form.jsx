@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import {connect } from "react-redux";
-import { add, del } from "../actions/contatos"
+import { connect } from "react-redux";
+import { add, del } from "../actions/contatos";
 
 class Form extends Component {
   state = { email: "", senha: "", conectado: true };
@@ -12,24 +12,31 @@ class Form extends Component {
   };
   onSubmitHandler = e => {
     e.preventDefault();
-    const request = this.state;
+    const { email, name, senha, conectado } = this.state;
 
     const novoContato = {
-      id: Math.random(),
-      email: request.email,
-      userName: request.email,
-      name: request.email,
-      senha: request.senha,
-      ativo: request.conectado,
-      sistemas: [{ descricao: "fixo teste" }]
-    }
-
-    this.props.add(novoContato)
-   
+      id: Math.floor(Math.random() * (1000 - 200) + 1000),
+      email: email,
+      userName: email,
+      name: name,
+      senha: senha,
+      ativo: conectado
+    };
+    this.props.add(novoContato);
   };
   render() {
     return (
       <form>
+        <div className="form-group">
+          <label htmlFor="nome">Nome</label>
+          <input
+            type="text"
+            className="form-control"
+            name="name"
+            value={this.state.name}
+            onChange={this.onChangeHandler}
+          />
+        </div>
         <div className="form-group">
           <label htmlFor="exampleInputEmail1">E-mail</label>
           <input
@@ -71,9 +78,6 @@ class Form extends Component {
         >
           Enviar
         </button>
-        <p>
-          <code>{JSON.stringify(this.state, null, 2)}</code>
-        </p>
       </form>
     );
   }
@@ -84,9 +88,12 @@ const mapDipatchToProps = dispatch => {
       dispatch(add(contato));
     },
     delete: key => {
-      dispatch(del(key))
+      dispatch(del(key));
     }
   };
 };
 
-export default  connect(null, mapDipatchToProps ) (Form);
+export default connect(
+  null,
+  mapDipatchToProps
+)(Form);
