@@ -1,4 +1,4 @@
-import { FILTER, PREFILL, DELETE, ADD } from "../actions/contatos";
+import { PREFILL, DELETE, ADD } from "../actions/contatos";
 const initialState = [
   {
     name: "teste",

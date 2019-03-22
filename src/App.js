@@ -3,7 +3,7 @@ import "./App.css";
 import Contatos from "./components/contatos";
 import Form from "./components/form";
 import { connect } from "react-redux";
-import { preFill, filter } from "./actions/contatos";
+import { preFill } from "./actions/contatos";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +16,7 @@ class App extends Component {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then(res => res.json())
       .then(result =>
-        result.slice(0, 5).map(c => ({
+        result.map(c => ({
           id: c.id,
           name: c.name,
           email: c.email,

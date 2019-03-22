@@ -3,8 +3,14 @@ import { connect } from "react-redux";
 import { add, del } from "../actions/contatos";
 
 class Form extends Component {
-  state = { email: "", senha: "", conectado: true };
+  constructor(props) {
+    super(props);
+    this.state = { name: "", email: "", senha: "", conectado: true };
+  }
+  churros = React.createRef();
+
   onChangeHandler = e => {
+    console.log(this.churros.current.value);
     let checkbox = e.target.type === "checkbox";
     this.setState({
       [e.target.name]: !checkbox ? e.target.value : e.target.checked
@@ -30,6 +36,7 @@ class Form extends Component {
         <div className="form-group">
           <label htmlFor="nome">Nome</label>
           <input
+            ref={this.churros}
             type="text"
             className="form-control"
             name="name"
