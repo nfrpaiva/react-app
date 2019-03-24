@@ -1,63 +1,52 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Contatos from "./components/contatos";
 import Form from "./components/form";
 import { connect } from "react-redux";
 import { preFill } from "./actions/contatos";
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      filter: ""
-    };
-  }
 
-  componentDidMount() {
+const App = props => {
+  const [filter, setFilter] = useState("");
+
+  useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then(res => res.json())
-      .then(result =>
-        result.map(c => ({
+      .then(result => {
+        const contatos = result.map(c => ({
           id: c.id,
           name: c.name,
           email: c.email,
           userName: c.username
-        }))
-      )
-      .then(contatos => {
-        this.props.preFill(contatos);
+        }));
+        props.preFill(contatos);
       })
       .catch(res => console.log("deu erro", res));
-  }
+  }, []);
 
-  handleText = e => {
+  const handleText = e => {
     let value = e.target.value;
-    this.setState({
-      filter: value
-    });
+    setFilter(value);
   };
 
-  contatosFiltrados = () => {
-    return this.props.contatos.filter(c =>
-      c.name.toLowerCase().includes(this.state.filter.toLowerCase())
+  const contatosFiltrados = () => {
+    return props.contatos.filter(c =>
+      c.name.toLowerCase().includes(filter.toLowerCase())
     );
   };
-
-  render() {
-    return (
-      <div className="App container">
-        <Form />
-        <input
-          style={{ textAlign: "center" }}
-          onChange={this.handleText}
-          type="text"
-          className="m-2"
-          value={this.state.filter}
-        />
-        <Contatos contatos={this.contatosFiltrados()} />
-      </div>
-    );
-  }
-}
+  return (
+    <div className="App container">
+      <Form />
+      <input
+        style={{ textAlign: "center" }}
+        onChange={handleText}
+        type="text"
+        className="m-2"
+        value={filter}
+      />
+      <Contatos contatos={contatosFiltrados()} />
+    </div>
+  );
+};
 
 const mapStateToProps = state => {
   return {

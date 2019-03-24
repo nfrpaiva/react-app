@@ -1,20 +1,13 @@
 import { PREFILL, DELETE, ADD } from "../actions/contatos";
-const initialState = [
-  {
-    name: "teste",
-    id: -1,
-    email: "zequina@teste.com",
-    userName: "Democrata"
-  }
-];
-const contatos = (state = initialState, action) => {
-  switch (action.type) {
+const initialState = [];
+const contatos = (state = initialState, { type, payload }) => {
+  switch (type) {
     case PREFILL:
-      return [...action.payload];
+      return [...payload];
     case ADD:
-      return [...state, { ...action.payload }];
+      return [...state, { ...payload }];
     case DELETE:
-      return state.filter(s => s.id !== action.payload);
+      return state.filter(s => s.id !== payload);
     default:
       return state;
   }
