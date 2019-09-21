@@ -1,7 +1,6 @@
-import React, { useReducer } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { del } from "../actions/contatos";
-import contatosReducer from "../reducers/contatos";
 const Contatos = props => {
   return (
     <React.Fragment>

@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import Contatos from "./components/contatos";
 import Form from "./components/form";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { preFill } from "./actions/contatos";
 
 const App = props => {
   const [filter, setFilter] = useState("");
+  const contatos = useSelector(state => state.contatosReducer);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
@@ -18,10 +20,11 @@ const App = props => {
           email: c.email,
           userName: c.username
         }));
-        props.preFill(contatos);
+        dispatch(preFill(contatos));
       })
       .catch(res => console.log("deu erro", res));
-  }, [props]);
+    // eslint-disable-next-line
+  }, []);
 
   const handleText = e => {
     let value = e.target.value;
@@ -29,7 +32,7 @@ const App = props => {
   };
 
   const contatosFiltrados = () => {
-    return props.contatos.filter(c =>
+    return contatos.filter(c =>
       c.name.toLowerCase().includes(filter.toLowerCase())
     );
   };
@@ -47,21 +50,4 @@ const App = props => {
     </div>
   );
 };
-
-const mapStateToProps = state => {
-  return {
-    contatos: state.contatosReducer
-  };
-};
-const mapDipatchToProps = dispatch => {
-  return {
-    preFill: contatos => {
-      dispatch(preFill(contatos));
-    }
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDipatchToProps
-)(App);
+export default App;
