@@ -21,7 +21,7 @@ const App = props => {
         props.preFill(contatos);
       })
       .catch(res => console.log("deu erro", res));
-  }, []);
+  }, [props]);
 
   const handleText = e => {
     let value = e.target.value;
