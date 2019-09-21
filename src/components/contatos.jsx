@@ -1,7 +1,11 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { del } from "../actions/contatos";
 const Contatos = props => {
+  const dispatch = useDispatch();
+  function deleteHandler(id) {
+    dispatch(del(id));
+  }
   return (
     <React.Fragment>
       <h1>Contatos {props.contatos.length}</h1>
@@ -27,7 +31,7 @@ const Contatos = props => {
                   <td>{userName}</td>
                   <td>
                     <button
-                      onClick={e => props.delete(id)}
+                      onClick={e => deleteHandler(id)}
                       className="btn btn-danger btn-sm"
                     >
                       excluir
@@ -42,16 +46,4 @@ const Contatos = props => {
     </React.Fragment>
   );
 };
-
-const mapDipatchToProps = dispatch => {
-  return {
-    delete: key => {
-      dispatch(del(key));
-    }
-  };
-};
-
-export default connect(
-  null,
-  mapDipatchToProps
-)(Contatos);
+export default Contatos;
