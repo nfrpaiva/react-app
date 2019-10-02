@@ -1,14 +1,17 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { del } from "../actions/contatos";
+
 const Contatos = props => {
+  const { contatos } = props;
   const dispatch = useDispatch();
   function deleteHandler(id) {
     dispatch(del(id));
   }
   return (
-    <React.Fragment>
-      <h1>Contatos {props.contatos.length}</h1>
+    <>
+      <h1>{`Contatos ${contatos.length}`}</h1>
       <table className="table table-striped">
         <thead>
           <tr>
@@ -20,7 +23,7 @@ const Contatos = props => {
           </tr>
         </thead>
         <tbody>
-          {props.contatos.map(c => {
+          {contatos.map(c => {
             const { id, name, email, userName } = c;
             return (
               <React.Fragment key={id}>
@@ -31,7 +34,8 @@ const Contatos = props => {
                   <td>{userName}</td>
                   <td>
                     <button
-                      onClick={e => deleteHandler(id)}
+                      type="button"
+                      onClick={() => deleteHandler(id)}
                       className="btn btn-danger btn-sm"
                     >
                       excluir
@@ -43,7 +47,10 @@ const Contatos = props => {
           })}
         </tbody>
       </table>
-    </React.Fragment>
+    </>
   );
+};
+Contatos.propTypes = {
+  contatos: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 export default Contatos;
